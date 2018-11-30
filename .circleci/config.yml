@@ -28,6 +28,7 @@ jobs:
       - run:
           command: echo "Current Branch:" ${CIRCLE_BRANCH}
       - run: cat local.properties
+      - run: cat app/fabric.properties
       - run:
           name: Initial build
           command: ./gradlew assembleDebug --no-daemon --stacktrace
@@ -36,7 +37,7 @@ jobs:
           destination: apks/
       - deploy:
           name: "Deploy to Fabric"
-          command: ./gradlew crashlyticsUploadDistributionRelease --stacktrace --debug --no-daemon
+          command: ./gradlew crashlyticsUploadDistributionDebug --stacktrace --debug --no-daemon
 workflows:
   version: 2
   workflow:
