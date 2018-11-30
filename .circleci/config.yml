@@ -27,6 +27,7 @@ jobs:
           path: app/build/test-results
       - run:
           command: echo "Current Branch:" ${CIRCLE_BRANCH}
+      - run: cat local.properties
       - run:
           name: Initial build
           command: ./gradlew assembleDebug --no-daemon --stacktrace
