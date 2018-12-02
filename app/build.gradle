@@ -5,13 +5,14 @@ apply plugin: 'io.fabric'
 
 // Proje kodlarının derlenmesi sonrasında otomatik olarak fabric.properties dosyası oluşturulur ve yine
 // otomatik olarak sistem environment değişkenlerinden crashlyticsApisecret ve crashlyticsApikey değerleri okunarak dosyaya eklenir.
-afterEvaluate {
-    buildFabricPropertiesIfNeeded()
-}
+//afterEvaluate {
+//    buildFabricPropertiesIfNeeded()
+//}
 
 /**
  * build fabric properties file, if missing
  */
+/*
 def buildFabricPropertiesIfNeeded() {
     def propertiesFile = file("fabric.properties")
     if (!propertiesFile.exists()) {
@@ -22,14 +23,15 @@ def buildFabricPropertiesIfNeeded() {
         }
     }
 }
+*/
 
 android {
     compileSdkVersion 28
 
-    def localPropertiesFile = rootProject.file("local.properties")
-    def localProperties = new Properties()
-    if (localPropertiesFile.exists()) {
-        localProperties.load(new FileInputStream(localPropertiesFile))
+    def fabricPropertiesFile = rootProject.file("app/fabric.properties")
+    def fabricProperties = new Properties()
+    if (fabricPropertiesFile.exists()) {
+        fabricProperties.load(new FileInputStream(fabricPropertiesFile))
     }
 
     defaultConfig {
@@ -42,15 +44,20 @@ android {
 
         ext.betaDistributionEmails = "aykuttasil@hotmail.com"
         ext.betaDistributionNotifications = true
-        resValue "string", "io.fabric.ApiKey", localProperties['apiKey']
+        resValue "string", "io.fabric.ApiKey", fabricProperties['apiKey']
     }
 
+    def keystorePropertiesFile = rootProject.file("keystore.properties")
+    def keystoreProperties = new Properties()
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    }
     signingConfigs {
         config {
-            keyAlias localProperties['signingKeyAlias']
-            keyPassword localProperties['signingKeyAliasPassword']
-            storeFile localProperties['aykutasilkeystore']
-            storePassword localProperties['signingStorePassword']
+            keyAlias keystoreProperties['signingKeyAlias']
+            keyPassword keystoreProperties['signingKeyAliasPassword']
+            storeFile file(keystoreProperties['signingStoreFile'])
+            storePassword keystoreProperties['signingStorePassword']
         }
     }
 

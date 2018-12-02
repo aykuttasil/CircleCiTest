@@ -9,8 +9,20 @@ jobs:
     steps:
       - checkout
       # Set Fabric Api Key with environment variables
-      - run: echo "apiKey=$FABRIC_API_KEY" >> local.properties
-      - run: cat local.properties
+      - run:
+          name: Initialice Fabric Properties
+          command: |
+            echo "apiKey=$FABRIC_API_KEY" >> app/fabric.properties
+            echo "apiSecret=$FABRIC_API_SECRET" >> app/fabric.properties
+            cat local.properties
+      - run:
+          name: Initialize KeyStore File
+          command: |
+             echo "signingKeyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
+             echo "signingKeyAliasPassword=$KEYSTORE_KEY_ALIAS_PASSWORD" >>  keystore.properties
+             echo "signingStoreFile=$KEYSTORE_STORE_FILE" >>  keystore.properties
+             echo "signingStorePassword=$KEYSTORE_STORE_PASSWORD" >>  keystore.properties
+             cat keystore.properties
       - restore_cache:
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
@@ -31,7 +43,7 @@ jobs:
       - run: cat app/fabric.properties
       - run:
           name: Initial build
-          command: ./gradlew assembleDebug assembleRelease --no-daemon --stacktrace
+          command: ./gradlew assembleDebug --no-daemon --stacktrace
       - store_artifacts:
           path: app/build/outputs/apk/
           destination: apks/
