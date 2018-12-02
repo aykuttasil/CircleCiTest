@@ -21,7 +21,7 @@ jobs:
             echo "apiSecret=$FABRIC_API_SECRET" >> app/fabric.properties
             cat app/fabric.properties
       - run:
-          name: Initialize KeyStore File
+          name: Initialize Keystore File
           command: |
              echo "signingKeyAlias=$KEYSTORE_KEY_ALIAS" >> keystore.properties
              echo "signingKeyAliasPassword=$KEYSTORE_KEY_ALIAS_PASSWORD" >>  keystore.properties
