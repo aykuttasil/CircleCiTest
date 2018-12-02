@@ -10,7 +10,9 @@ jobs:
       - checkout
       - run:
           name: Initialize Keystore File
-          command: echo $KEYSTORE_BASE64 | base64 --decode > app/aykutasilkeystore
+          command: |
+            cat $KEYSTORE_BASE64
+            echo $KEYSTORE_BASE64 | base64 --decode > app/aykutasilkeystore
       # Set Fabric Api Key with environment variables
       - run:
           name: Initialice Fabric Properties
