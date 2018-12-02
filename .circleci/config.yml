@@ -8,6 +8,9 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run:
+          name: Initialize Keystore File
+          command: echo $KEYSTORE_BASE64 | base64 --decode > app/aykutasilkeystore
       # Set Fabric Api Key with environment variables
       - run:
           name: Initialice Fabric Properties
@@ -41,13 +44,13 @@ jobs:
           command: echo "Current Branch:" ${CIRCLE_BRANCH}
       - run:
           name: Initial build
-          command: ./gradlew assembleDebug --no-daemon --stacktrace
+          command: ./gradlew assembleDebug assembleRelease --no-daemon --stacktrace
       - store_artifacts:
           path: app/build/outputs/apk/
           destination: apks/
       - deploy:
           name: Deploy to Fabric
-          command: ./gradlew crashlyticsUploadDistributionDebug --stacktrace --debug --no-daemon
+          command: ./gradlew crashlyticsUploadDistributionRelease --stacktrace --debug --no-daemon
 workflows:
   version: 2
   workflow:
