@@ -14,7 +14,7 @@ jobs:
             echo $KEYSTORE_BASE64 | base64 --decode > app/aykutasilkeystore
       # Set Fabric Api Key with environment variables
       - run:
-          name: Initialice Fabric Properties
+          name: Initialize Fabric Properties
           command: |
             echo "apiKey=$FABRIC_API_KEY" >> app/fabric.properties
             echo "apiSecret=$FABRIC_API_SECRET" >> app/fabric.properties
